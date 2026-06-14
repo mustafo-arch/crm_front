@@ -4,36 +4,41 @@ import { LoginPage } from '../../features/auth/pages/loginPage';
 import MainLayout from '../../components/layout/MainLayout';
 import { DashboardPage } from '../../features/dashboard/pages/DashboardPage';
 import { ProfilePage } from '../../features/profiles/pages/ProfilePage';
-
+import { TeachersPage } from '../../features/teachers/pages/TeachersPage'; // <-- SHU YERDA IMPORT BO'LDI
+import { ManagersPage } from '../../features/manager/page/ManagersPage';
+import { StudentsPage } from '../../features/students/pages/StudentsPage';
 
 export const router = createBrowserRouter([
-  // 1. Ochiq sahifa (Faqat tizimga kirmaganlar uchun)
   {
     path: '/login',
     element: <LoginPage />,
   },
-  
-  // 2. To'liq himoyalangan CRM ichki tizimi
   {
     path: '/',
-    element: <RoleGuard />, // Hech qanday role berilmagani uchun faqat Tizimga kirganini (token) tekshiradi
+    element: <RoleGuard />, 
     children: [
       {
-        element: <MainLayout />, // Tizimga kirgan bo'lsa Layout ichiga kiradi
+        element: <MainLayout />, 
         children: [
           {
             index: true,
             element: <Navigate to="/dashboard" replace />,
           },
-          // Rolga qarab o'zgaruvchi universal dashboard
           {
             path: 'dashboard',
             element: <DashboardPage />,
           },
-          // Hamma rollar ishlata oladigan shaxsiy profil sahifasi
           {
             path: 'profile',
             element: <ProfilePage />,
+          },
+          
+          // ================= FAQAT ADMIN KIRADIGAN JOYLAR =================
+          {
+            element: <RoleGuard allowedRoles={['ADMIN']} />,
+            children: [
+              { path: 'managers', element: <ManagersPage /> },
+            ],
           },
           
           // ================= FAQAT ADMIN VA MANAGER KIRADIGAN JOYLAR =================
@@ -41,8 +46,8 @@ export const router = createBrowserRouter([
             element: <RoleGuard allowedRoles={['ADMIN', 'MANAGER']} />,
             children: [
               { path: 'groups', element: <div className="p-6 text-text-main">Guruhlar sahifasi</div> },
-              { path: 'students', element: <div className="p-6 text-text-main">O'quvchilar sahifasi</div> },
-              { path: 'teachers', element: <div className="p-6 text-text-main">O'qituvchilar sahifasi</div> },
+              { path: 'students', element: <StudentsPage/> },
+              { path: 'teachers', element: <TeachersPage /> }, // <--- HAQIQIY KOMPONENTGA ALMAŞTIRILDI ✅
               { path: 'finance', element: <div className="p-6 text-text-main">Moliya sahifasi</div> },
             ],
           },
@@ -58,8 +63,6 @@ export const router = createBrowserRouter([
       },
     ],
   },
-  
-  // Ruxsat berilmagan sahifa xabari
   {
     path: '/unauthorized',
     element: (
@@ -70,8 +73,6 @@ export const router = createBrowserRouter([
       </div>
     ),
   },
-
-  // Noto'g'ri link yozilsa hammasini bitta joyga yig'ish
   {
     path: '*',
     element: <Navigate to="/" replace />,
