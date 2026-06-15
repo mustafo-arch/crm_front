@@ -1,7 +1,5 @@
-import { AxiosError, type AxiosResponse, type InternalAxiosRequestConfig } from "axios";
-import axios from "axios";
+import axios, { AxiosError, type AxiosResponse, type InternalAxiosRequestConfig } from "axios";
 import { useAuthStore } from "../store/authStore";
-
 
 interface RefreshResponse {
   accessToken: string;
@@ -23,7 +21,7 @@ export const apiClient = axios.create({
 let isRefreshing = false;
 let failedQueue: FailedQueueItem[] = [];
 
-const processQueue = (error: AxiosError | Error | null, token: string | null = null) => {
+const processQueue = (error: AxiosError | Error | null, token: string | null = null): void => {
   failedQueue.forEach((prom) => {
     if (error) {
       prom.reject(error);
@@ -55,6 +53,7 @@ apiClient.interceptors.response.use(
     // Agar xatolik 401 bo'lsa va bu aynan refresh so'rovining o'zi bo'lmasa
     if (
       error.response?.status === 401 && 
+      originalRequest &&
       !originalRequest._retry && 
       !originalRequest.url?.includes('/auth/refresh')
     ) {
@@ -63,12 +62,12 @@ apiClient.interceptors.response.use(
           failedQueue.push({ resolve, reject });
         })
           .then((token) => {
-            if (originalRequest.headers) {
+            if (originalRequest.headers && token) {
               originalRequest.headers.Authorization = `Bearer ${token}`;
             }
             return apiClient(originalRequest);
           })
-          .catch((err) => Promise.reject(err));
+          .catch((err: AxiosError | Error) => Promise.reject(err));
       }
 
       originalRequest._retry = true;
@@ -106,3 +105,4 @@ apiClient.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+

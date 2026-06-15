@@ -31,11 +31,11 @@ export const TeachersPage = () => {
         isActive: statusFilter === 'all' ? undefined : statusFilter === 'true',
       };
 
-      const data = await teachersApi.getAll(queryParams);
+      const data = await teachersApi.getAll(queryParams)
       
       if (data && Array.isArray(data.items)) {
         setTeachers(data.items);
-        setMeta(data.meta);
+        setMeta(data.meta);        
       } else {
         setTeachers([]);
       }

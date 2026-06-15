@@ -1,12 +1,19 @@
+// src/routes/router.tsx (Yoki sening router joylashgan fayling)
+
 import { createBrowserRouter, Navigate } from 'react-router-dom';
 import { RoleGuard } from './RoleGuard';
 import { LoginPage } from '../../features/auth/pages/loginPage';
 import MainLayout from '../../components/layout/MainLayout';
 import { DashboardPage } from '../../features/dashboard/pages/DashboardPage';
 import { ProfilePage } from '../../features/profiles/pages/ProfilePage';
-import { TeachersPage } from '../../features/teachers/pages/TeachersPage'; // <-- SHU YERDA IMPORT BO'LDI
+import { TeachersPage } from '../../features/teachers/pages/TeachersPage';
 import { ManagersPage } from '../../features/manager/page/ManagersPage';
 import { StudentsPage } from '../../features/students/pages/StudentsPage';
+import { RoomsPage } from '../../features/rooms/pages/RoomsPage';
+import { GroupsPage } from '../../features/groups/pages/GroupPages';
+import { TeachingAssignmentsPage } from '../../features/teaching-assignment/Page/TeachAssignPage';
+
+// 🚀 Yangi qo'shilgan Ustozlarni biriktirish sahifasi
 
 export const router = createBrowserRouter([
   {
@@ -45,9 +52,14 @@ export const router = createBrowserRouter([
           {
             element: <RoleGuard allowedRoles={['ADMIN', 'MANAGER']} />,
             children: [
-              { path: 'groups', element: <div className="p-6 text-text-main">Guruhlar sahifasi</div> },
-              { path: 'students', element: <StudentsPage/> },
-              { path: 'teachers', element: <TeachersPage /> }, // <--- HAQIQIY KOMPONENTGA ALMAŞTIRILDI ✅
+              { path: 'groups', element: <GroupsPage /> },
+              { path: 'students', element: <StudentsPage /> },
+              { path: 'teachers', element: <TeachersPage /> },
+              { path: 'rooms', element: <RoomsPage /> },
+              
+              // 🚀 Yangi dars biriktirish / jadvallar boshqaruvi yo'nalishi qo'shildi
+              { path: 'teaching-assignments', element: <TeachingAssignmentsPage /> },
+              
               { path: 'finance', element: <div className="p-6 text-text-main">Moliya sahifasi</div> },
             ],
           },

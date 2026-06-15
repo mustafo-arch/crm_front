@@ -1,19 +1,34 @@
 import { Link, useLocation } from 'react-router-dom';
 import { useAuthStore } from '../../store/authStore';
 
+// Foydalanuvchi rollarining aniq turlari
+type UserRole = 'ADMIN' | 'MANAGER' | 'TEACHER';
+
+// Menyu elementlari uchun toza TypeScript interfeysi
+interface MenuItem {
+  path: string;
+  label: string;
+  roles: UserRole[];
+}
+
 export const Sidebar = () => {
   const location = useLocation();
-  const { user } = useAuthStore(); // user.role qiymati: 'ADMIN', 'MANAGER', 'TEACHER'
-  const currentRole = user?.role;
+  const { user } = useAuthStore(); 
+  const currentRole = user?.role as UserRole | undefined;
 
   // Hamma menyular ro'yxati va ularga ruxsat berilgan rollar
-  const menuItems = [
+  const menuItems: MenuItem[] = [
     { path: '/dashboard', label: 'Dashboard', roles: ['ADMIN', 'MANAGER', 'TEACHER'] },
-    { path: '/managers', label: 'Managerlar', roles: ['ADMIN'] }, // Faqat Admin ko'radi
-    { path: '/teachers', label: 'Oʻqituvchilar', roles: ['ADMIN', 'MANAGER'] }, // Admin va Manager ko'radi ✅
+    { path: '/managers', label: 'Managerlar', roles: ['ADMIN'] },
+    { path: '/teachers', label: 'Oʻqituvchilar', roles: ['ADMIN', 'MANAGER'] },
+    { path: '/rooms', label: 'Xonalar', roles: ['ADMIN', 'MANAGER'] },
     { path: '/groups', label: 'Guruhlar', roles: ['ADMIN', 'MANAGER'] },
+    
+    // 🚀 Yangi qo'shilgan Ustozlar biriktiruvi menyusi (Faqat Admin va Manager ko'ra oladi)
+    { path: '/teaching-assignments', label: 'Ustozlar Biriktiruvi', roles: ['ADMIN', 'MANAGER'] },
+    
     { path: '/students', label: 'Oʻquvchilar', roles: ['ADMIN', 'MANAGER'] },
-    { path: '/attendance', label: 'Davomat', roles: ['TEACHER'] }, // Faqat o'qituvchi ko'radi
+    { path: '/attendance', label: 'Davomat', roles: ['TEACHER'] },
     { path: '/finance', label: 'Moliya', roles: ['ADMIN', 'MANAGER'] },
     { path: '/profile', label: 'Profil', roles: ['ADMIN', 'MANAGER', 'TEACHER'] },
   ];
@@ -27,7 +42,7 @@ export const Sidebar = () => {
       <nav className="flex-1 space-y-1">
         {menuItems.map((item) => {
           // Agar joriy foydalanuvchining roli ushbu menyuga ruxsat etilmagan bo'lsa, uni chizmaymiz
-          if (!item.roles.includes(currentRole!)) return null;
+          if (!currentRole || !item.roles.includes(currentRole)) return null;
 
           const isActive = location.pathname === item.path;
 
