@@ -115,12 +115,7 @@ export const ProfilePage = () => {
           </div>
 
           <div className="border-t border-border/60 pt-4 space-y-4">
-            <div>
-              <span className="text-xs text-text-muted block">Foydalanuvchi ID (Role ID)</span>
-              <code className="text-sm font-mono text-text-main bg-background px-2 py-1 rounded border border-border block mt-1 break-all">
-                {user?.id || 'ID-topilmadi'}
-              </code>
-            </div>
+
 
             <div>
               <span className="text-xs text-text-muted block">Telefon raqami</span>

@@ -11,24 +11,24 @@
   --color-text-muted: var(--text-muted);
 }
 
-/* 2. LIGHT MODE (DEFAULT) GLOBAL O'ZGARUVCHILARI */
+/* 2. LIGHT MODE (DEFAULT) GLOBAL O'ZGARUVCHILARI - Yumshoq va premium ko'rinish */
 :root {
-  --primary: #3b82f6;          /* Moviy rang */
-  --primary-hover: #2563eb;
-  --background: #f8fafc;       /* Och kulrang fon */
-  --card: #ffffff;             /* Oq karta foni */
-  --border: #e2e8f0;           /* Och chegara chizig'i */
-  --text-main: #0f172a;        /* To'q matn */
-  --text-muted: #64748b;       /* Soniq matn */
+  --primary: #4f46e5;          /* Zamonaviy Indigo (ko'k-binafsha aralash) rang */
+  --primary-hover: #4338ca;
+  --background: #fdfdfd;       /* Sof oq emas, biroz sutrang (ko'zni charchatmaydi) */
+  --card: #ffffff;             
+  --border: #f1f5f9;           /* Juda mayin va silliq chegara chizig'i (Slate-100) */
+  --text-main: #0f172a;        /* Chuqur quyuq rang (Slate-900) */
+  --text-muted: #64748b;       /* Silliq matn rangi (Slate-500) */
 }
 
-/* 3. DARK MODE GLOBAL O'ZGARUVCHILARI */
+/* 3. DARK MODE GLOBAL O'ZGARUVCHILARI - Haqiqiy premium va chuqur interfeys */
 .dark {
-  --primary: #3b82f6;
-  --primary-hover: #2563eb;
-  --background: #0f172a;       /* To'q ko'k/qora fon */
-  --card: #1e293b;             /* Sal ochroq karta foni */
-  --border: #334155;           /* To'q rejim chegarasi */
-  --text-main: #f8fafc;        /* Oqish matn */
-  --text-muted: #94a3b8;       /* Kulrang matn */
+  --primary: #6366f1;          /* Dark mode da biroz ochroq va yorqinroq Indigo */
+  --primary-hover: #4f46e5;
+  --background: #090d16;       /* Mutlaqo qora emas, juda quyuq tungi osmon rangi */
+  --card: #111827;             /* Kontent kartalari uchun silliq quyuq rang (Gray-900) */
+  --border: #1f2937;           /* Ko'zga tashlanmaydigan to'q chegara chizig'i (Gray-800) */
+  --text-main: #f3f4f6;        /* Ko'zni qamashtirmaydigan mayin oqish rang (Gray-100) */
+  --text-muted: #9ca3af;       /* Tushunarli va silliq kulrang (Gray-400) */
 }

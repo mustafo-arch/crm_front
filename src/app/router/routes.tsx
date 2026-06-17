@@ -1,5 +1,3 @@
-// src/routes/router.tsx (Yoki sening router joylashgan fayling)
-
 import { createBrowserRouter, Navigate } from 'react-router-dom';
 import { RoleGuard } from './RoleGuard';
 import { LoginPage } from '../../features/auth/pages/loginPage';
@@ -12,8 +10,10 @@ import { StudentsPage } from '../../features/students/pages/StudentsPage';
 import { RoomsPage } from '../../features/rooms/pages/RoomsPage';
 import { GroupsPage } from '../../features/groups/pages/GroupPages';
 import { TeachingAssignmentsPage } from '../../features/teaching-assignment/Page/TeachAssignPage';
+import { EnrollmentsPage } from '../../features/enrollments/page/EnrollmentsPage';
 
-// 🚀 Yangi qo'shilgan Ustozlarni biriktirish sahifasi
+// 💰 Haqiqiy Moliya sahifasini import qilamiz (skrinshotdagi tuzilma bo'yicha)
+import { FinancePage } from '../../features/finance/pages/FinancePage';
 
 export const router = createBrowserRouter([
   {
@@ -40,7 +40,6 @@ export const router = createBrowserRouter([
             element: <ProfilePage />,
           },
           
-          // ================= FAQAT ADMIN KIRADIGAN JOYLAR =================
           {
             element: <RoleGuard allowedRoles={['ADMIN']} />,
             children: [
@@ -48,7 +47,6 @@ export const router = createBrowserRouter([
             ],
           },
           
-          // ================= FAQAT ADMIN VA MANAGER KIRADIGAN JOYLAR =================
           {
             element: <RoleGuard allowedRoles={['ADMIN', 'MANAGER']} />,
             children: [
@@ -56,15 +54,14 @@ export const router = createBrowserRouter([
               { path: 'students', element: <StudentsPage /> },
               { path: 'teachers', element: <TeachersPage /> },
               { path: 'rooms', element: <RoomsPage /> },
-              
-              // 🚀 Yangi dars biriktirish / jadvallar boshqaruvi yo'nalishi qo'shildi
               { path: 'teaching-assignments', element: <TeachingAssignmentsPage /> },
+              { path: 'enrollments', element: <EnrollmentsPage /> },
               
-              { path: 'finance', element: <div className="p-6 text-text-main">Moliya sahifasi</div> },
+              // 💰 Vaqtinchalik div o'rniga haqiqiy sahifani ulaymiz:
+              { path: 'finance', element: <FinancePage /> },
             ],
           },
 
-          // ================= FAQAT O'QITUVCHI KIRADIGAN JOYLAR =================
           {
             element: <RoleGuard allowedRoles={['TEACHER']} />,
             children: [
