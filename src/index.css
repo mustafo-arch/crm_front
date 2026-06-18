@@ -1,34 +1,172 @@
+/* src/index.css */
 @import 'tailwindcss';
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "@fontsource-variable/geist";
 
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /* ================= LIGHT MODE (PREMIUM QAYMOQRANG & ISSIQ GRAFIKA) ================= */
+  --background: oklch(0.985 0.008 85);   /* Haqiqiy premium, ko'zni charchatmaydigan silliq qaymoqrang */
+  --card: oklch(1 0 0);                 /* Kontrast berish uchun toza oq panellar */
+  --border: oklch(0.935 0.012 85);       /* Yumshoq issiq bej/sarg'ish chiziqlar */
+
+  /* Matnlar (Warm Typography) */
+  --text-main: #24211d;                 /* To'q qahva/shokolad rang - qoradan ko'ra ancha qimmat ko'rinadi */
+  --text-muted: #756f64;                /* Sokin kulrang-jigarrang tus */
+
+  /* Brand ranglari ("Zarbdor" logotipining boy qirol ko'k-binafshasi - Royal Indigo) */
+  --primary: oklch(0.52 0.21 265);      /* Mukammal sozlangan to'yingan Indigo */
+  --primary-hover: oklch(0.45 0.21 265);
+  --primary-light: rgba(79, 70, 229, 0.08);
+  
+  --foreground: oklch(0.20 0.01 85);
+  --card-foreground: oklch(0.20 0.01 85);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.20 0.01 85);
+  --primary-foreground: oklch(0.99 0 0);
+  --secondary: oklch(0.95 0.01 85);
+  --secondary-foreground: oklch(0.52 0.21 265);
+  
+  --muted: oklch(0.95 0.01 85);
+  --muted-foreground: oklch(0.55 0.01 85);
+  --accent: oklch(0.95 0.01 85);
+  --accent-foreground: oklch(0.52 0.21 265);
+  
+  /* Destructive - Premium Crimson Red */
+  --destructive: oklch(0.58 0.22 25);
+  --input: oklch(0.935 0.012 85);
+  --ring: oklch(0.52 0.21 265 / 40%);
+  
+  --chart-1: oklch(0.60 0.20 260);
+  --chart-2: oklch(0.70 0.15 140);
+  --chart-3: oklch(0.75 0.18 70);
+  --chart-4: oklch(0.65 0.22 20);
+  --chart-5: oklch(0.55 0.18 340);
+  
+  --radius: 0.75rem; /* Biroq yumshoqroq zamonaviy radius */
+  
+  --sidebar: oklch(0.99 0.005 85);
+  --sidebar-foreground: oklch(0.20 0.01 85);
+  --sidebar-primary: oklch(0.52 0.21 265);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.95 0.01 85);
+  --sidebar-accent-foreground: oklch(0.52 0.21 265);
+  --sidebar-border: oklch(0.935 0.012 85);
+  --sidebar-ring: oklch(0.52 0.21 265 / 30%);
+}
+
+.dark {
+  /* ================= DARK MODE (CYBERPUNK DEEP NIGHT SLATE) ================= */
+  --background: oklch(0.14 0.018 255);    /* To'q kosmik tungi ko'k-kulrang asos */
+  --card: oklch(0.19 0.022 255);          /* Panellar va sidebar uchun biroz ochroq premium qatlam */
+  --border: oklch(0.28 0.025 255 / 45%);   /* Neon nurni o'tkazuvchi shaffof yarim-to'q chegaralar */
+
+  /* Matnlar */
+  --text-main: #f3f4f6;                 /* Yuqori kontrastli toza oqish matn */
+  --text-muted: #d2e3ff;                /* Sokin va o'qishga oson kulrang */
+
+  /* Brand yorqinligi (To'q fonda mukammal yonuvchi kiber-neon indigo) */
+  --primary: oklch(0.68 0.19 265);       /* To'q fonda g'ayratli chiroyli porlovchi ko'k-binafsha */
+  --primary-hover: oklch(0.62 0.21 265);
+  --primary-light: rgba(129, 140, 248, 0.15);
+  
+  --foreground: oklch(0.95 0.005 255);
+  --card-foreground: oklch(0.95 0.005 255);
+  --popover: oklch(0.19 0.022 255);
+  --popover-foreground: oklch(0.95 0.005 255);
+  --primary-foreground: oklch(0.12 0.02 255);
+  --secondary: oklch(0.24 0.025 255);
+  --secondary-foreground: oklch(0.95 0.005 255);
+  
+  --muted: oklch(0.24 0.025 255);
+  --muted-foreground: oklch(0.65 0.015 255);
+  --accent: oklch(0.24 0.025 255);
+  --accent-foreground: oklch(0.68 0.19 265);
+  
+  /* Destructive - Neon Coral Neon */
+  --destructive: oklch(0.62 0.21 28);
+  --input: oklch(1 0 0 / 8%);
+  --ring: oklch(0.68 0.19 265 / 50%);
+  
+  --chart-1: oklch(0.68 0.19 265);
+  --chart-2: oklch(0.72 0.16 150);
+  --chart-3: oklch(0.78 0.15 80);
+  --chart-4: oklch(0.65 0.20 30);
+  --chart-5: oklch(0.62 0.19 330);
+  
+  --sidebar: oklch(0.17 0.022 255);
+  --sidebar-foreground: oklch(0.95 0.005 255);
+  --sidebar-primary: oklch(0.68 0.19 265);
+  --sidebar-primary-foreground: oklch(0.12 0.02 255);
+  --sidebar-accent: oklch(0.24 0.025 255);
+  --sidebar-accent-foreground: oklch(0.68 0.19 265);
+  --sidebar-border: oklch(0.28 0.025 255 / 40%);
+  --sidebar-ring: oklch(0.68 0.19 265 / 40%);
+}
+
+/* ================= TAILWIND INTEGRATSIYASI UCHUN BINDING ================= */
 @theme {
-  /* Biz loyihada ishlatgan barcha maxsus nomli ranglarni v4 tizimiga tanitamiz */
-  --color-primary: var(--primary);
-  --color-primary-hover: var(--primary-hover);
   --color-background: var(--background);
   --color-card: var(--card);
   --color-border: var(--border);
   --color-text-main: var(--text-main);
   --color-text-muted: var(--text-muted);
+  --color-primary: var(--primary);
 }
 
-/* 2. LIGHT MODE (DEFAULT) GLOBAL O'ZGARUVCHILARI - Yumshoq va premium ko'rinish */
-:root {
-  --primary: #4f46e5;          /* Zamonaviy Indigo (ko'k-binafsha aralash) rang */
-  --primary-hover: #4338ca;
-  --background: #fdfdfd;       /* Sof oq emas, biroz sutrang (ko'zni charchatmaydi) */
-  --card: #ffffff;             
-  --border: #f1f5f9;           /* Juda mayin va silliq chegara chizig'i (Slate-100) */
-  --text-main: #0f172a;        /* Chuqur quyuq rang (Slate-900) */
-  --text-muted: #64748b;       /* Silliq matn rangi (Slate-500) */
+@theme inline {
+  --font-heading: var(--font-sans);
+  --font-sans: 'Geist Variable', sans-serif;
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-/* 3. DARK MODE GLOBAL O'ZGARUVCHILARI - Haqiqiy premium va chuqur interfeys */
-.dark {
-  --primary: #6366f1;          /* Dark mode da biroz ochroq va yorqinroq Indigo */
-  --primary-hover: #4f46e5;
-  --background: #090d16;       /* Mutlaqo qora emas, juda quyuq tungi osmon rangi */
-  --card: #111827;             /* Kontent kartalari uchun silliq quyuq rang (Gray-900) */
-  --border: #1f2937;           /* Ko'zga tashlanmaydigan to'q chegara chizig'i (Gray-800) */
-  --text-main: #f3f4f6;        /* Ko'zni qamashtirmaydigan mayin oqish rang (Gray-100) */
-  --text-muted: #9ca3af;       /* Tushunarli va silliq kulrang (Gray-400) */
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-text-main antialiased;
+  }
+  html {
+    @apply font-sans;
+  }
 }

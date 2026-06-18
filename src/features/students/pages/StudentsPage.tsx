@@ -1,24 +1,22 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { studentsApi, type StudentItem, type PaginationMeta, type GetStudentsParams } from '../api/StudentsApi';
 import { StudentsTable } from '../components/StudentsTable';
 import { StudentFormModal } from '../components/StudentFormModal';
+import { toast } from 'sonner'; // 🔥 Global Sonner ulandi
+import { GraduationCap, UserPlus, Search } from 'lucide-react';
 
 export const StudentsPage = () => {
-  // Data states
   const [students, setStudents] = useState<StudentItem[]>([]);
   const [meta, setMeta] = useState<PaginationMeta | null>(null);
   const [page, setPage] = useState<number>(1);
   const [search, setSearch] = useState<string>('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [toast, setToast] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
-  // Modal states
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMode, setModalMode] = useState<'create' | 'edit'>('create');
   const [selectedStudent, setSelectedStudent] = useState<StudentItem | null>(null);
 
-  // Talabalarni yuklash funksiyasi
   const loadStudents = useCallback(async () => {
     setIsLoading(true);
     try {
@@ -39,13 +37,12 @@ export const StudentsPage = () => {
       }
     } catch (err) {
       console.error('Talabalarni yuklashda xatolik:', err);
-      setStudents([]);
+      toast.error('O‘quvchilar ro‘yxatini yuklashda muammo yuz berdi!');
     } finally {
       setIsLoading(false);
     }
   }, [page, statusFilter, search]);
 
-  // Effekt orqali kuzatish
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     loadStudents();
@@ -70,95 +67,99 @@ export const StudentsPage = () => {
   };
 
   const handleSuccess = () => {
-    setToast({
-      type: 'success',
-      text: modalMode === 'create' ? 'O‘quvchi muvaffaqiyatli qo‘shildi!' : 'O‘quvchi ma’lumotlari yangilandi!',
+    const message = modalMode === 'create' 
+      ? 'O‘quvchi muvaffaqiyatli qo‘shildi!' 
+      : 'O‘quvchi ma’lumotlari muvaffaqiyatli yangilandi!';
+
+    toast.success(message, {
+      description: "O'quvchi ma'lumotlar bazasida muvaffaqiyatli sinxronizatsiya qilindi.",
     });
     setPage(1);
     loadStudents();
-    setTimeout(() => setToast(null), 3000);
   };
 
-  // 🚀 STATUSNI O'ZGARTIRISH (AKTIVLASHTIRISH MUAMMOSI SHU YERDA YECHILDI)
   const handleToggleStatus = async (student: StudentItem) => {
     try {
       if (student.isActive) {
         if (window.confirm(`${student.fullName} talabalik safidan chiqarilsinmi (Muzlatilsinmi)?`)) {
           await studentsApi.delete(student.id);
-          setToast({ type: 'success', text: 'O‘quvchi muvaffaqiyatli muzlatildi.' });
+          toast.success('O‘quvchi muvaffaqiyatli muzlatildi.', {
+            description: `${student.fullName} profili hozircha nofaol rejimga o'tkazildi.`
+          });
         } else {
           return;
         }
       } else {
-        // 🛠️ 404 bergan eski .restore() o'rniga PATCH /students/:id ga { isActive: true } yuboramiz
         await studentsApi.update(student.id, { isActive: true });
-        setToast({ type: 'success', text: 'O‘quvchi faol holatga qaytarildi.' });
+        toast.success('O‘quvchi faol holatga qaytarildi.', {
+          description: `${student.fullName} darslar va guruhlarga qayta biriktirilishi mumkin.`
+        });
       }
       loadStudents();
-      setTimeout(() => setToast(null), 3000);
     } catch (err) {
       console.error('Statusni o‘zgartirishda xatolik:', err);
-      setToast({ type: 'error', text: 'Amalni bajarishda xatolik yuz berdi.' });
-      setTimeout(() => setToast(null), 3000);
+      toast.error('Amalni bajarishda kutilmagan xatolik yuz berdi.');
     }
   };
 
   return (
-    <div className="p-6 space-y-6 bg-background min-h-screen text-text-main transition-colors duration-300">
+    <div className="space-y-6 text-text-main transition-colors duration-300">
       
-      {/* Sarlavha paneli */}
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-black tracking-tight">O‘quvchilar Paneli</h1>
-          <p className="text-xs text-text-muted">Backend DTO modelga asosan to‘liq boshqaruv tizimi.</p>
+      {/* Premium Glassmorphism Boshqaruv paneli */}
+      <div className="flex flex-col xl:flex-row xl:items-center xl:justify-between gap-5 bg-[color-mix(in_srgb,var(--card)_60%,transparent)] backdrop-blur-xl p-6 border border-[color-mix(in_srgb,var(--border)_35%,transparent)] rounded-3xl shadow-xl shadow-black/5 hover:border-primary/20 transition-all duration-300">
+        
+        <div className="flex items-center gap-4">
+          <div className="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center border border-primary/20 shadow-inner">
+            <GraduationCap size={22} className="text-primary animate-pulse"/>
+          </div>
+          <div className="space-y-0.5">
+            <h1 className="text-xl font-black tracking-tight">O‘quvchilar Paneli</h1>
+            <p className="text-[11px] text-text-muted font-semibold tracking-wide">O'quvchilar shaxsiy ma'lumotlari, guruh holatlari va faollik statusini kiber-boshqarish.</p>
+          </div>
         </div>
         
-        {/* Qidiruv va Filtrlar */}
-        <div className="flex flex-wrap items-center gap-2 w-full md:w-auto justify-between md:justify-end">
-          <form onSubmit={handleSearchSubmit} className="flex items-center gap-2">
+        {/* Filtr va Qidiruv Qismi */}
+        <div className="flex flex-wrap items-center gap-3 w-full xl:w-auto">
+          <form onSubmit={handleSearchSubmit} className="flex flex-wrap items-center gap-2 flex-1 sm:flex-initial">
             <select 
               value={statusFilter} 
               onChange={e => { setPage(1); setStatusFilter(e.target.value); }}
-              className="px-3 py-2 text-xs rounded-xl border border-border bg-card text-text-main focus:outline-none cursor-pointer"
+              className="px-3 py-2.5 text-xs font-bold rounded-xl border border-[color-mix(in_srgb,var(--border)_50%,transparent)] bg-[color-mix(in_srgb,var(--card)_70%,transparent)] text-text-main focus:outline-none focus:border-primary cursor-pointer transition-all"
             >
               <option value="all">Hamma holatlar</option>
               <option value="true">Faollar</option>
               <option value="false">Muzlatilganlar</option>
             </select>
 
-            <div className="flex w-48 sm:w-64">
+            <div className="flex flex-1 sm:w-64 relative">
               <input
                 type="text"
                 placeholder="Ism, familiya..."
                 value={search}
                 onChange={e => setSearch(e.target.value)}
-                className="w-full px-4 py-2 text-xs rounded-l-xl border border-border bg-card text-text-main focus:outline-none"
+                className="w-full pl-3 pr-20 py-2.5 text-xs rounded-xl border border-[color-mix(in_srgb,#0b60f1,transparent)] bg-[color-mix(in_srgb,var(--card)_70%,transparent)] text-text-main focus:outline-none focus:border-primary transition-all placeholder:text-text-muted/40"
               />
-              <button type="submit" className="px-4 bg-primary text-white text-xs font-bold rounded-r-xl hover:opacity-90 cursor-pointer">
-                Qidirish
+              <button 
+                type="submit" 
+                className="absolute right-1 top-1 bottom-1 px-3 bg-primary text-white text-[11px] font-black rounded-lg hover:opacity-90 cursor-pointer transition-all flex items-center gap-1"
+              >
+                <Search size={12} />
+                <span>Qidirish</span>
               </button>
             </div>
           </form>
 
           <button
             onClick={handleOpenCreateModal}
-            className="px-4 py-2 bg-primary text-white text-xs font-bold rounded-xl shadow-md hover:opacity-90 transition-all cursor-pointer"
+            className="px-5 py-2.5 bg-primary text-white text-xs font-black rounded-xl shadow-lg shadow-primary/25 hover:shadow-primary/35 hover:scale-[1.01] active:scale-[0.99] transition-all cursor-pointer uppercase tracking-wider flex items-center gap-2 group"
           >
-            + Yangi o‘quvchi
+            <UserPlus size={15} className="group-hover:translate-x-0.5 transition-transform"/>
+            <span>Yangi o‘quvchi</span>
           </button>
         </div>
       </div>
 
-      {/* Toast bildirishnomasi */}
-      {toast && (
-        <div className={`p-3 rounded-xl text-xs font-semibold border max-w-sm fixed bottom-5 right-5 z-50 shadow-lg animate-slideIn ${
-          toast.type === 'success' ? 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20' : 'bg-red-500/10 text-red-500 border-red-500/20'
-        }`}>
-          {toast.text}
-        </div>
-      )}
-
-      {/* Jadval */}
+      {/* Jadval komponenti */}
       <StudentsTable
         students={students}
         isLoading={isLoading}
@@ -169,7 +170,7 @@ export const StudentsPage = () => {
         onToggleStatus={handleToggleStatus}
       />
 
-      {/* Modal oyna */}
+      {/* Universal Oyna (Modal) */}
       <StudentFormModal
         isOpen={isModalOpen}
         mode={modalMode}

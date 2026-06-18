@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { managersApi, type ManagerListItem } from '../api/ManagerApi';
+import { X, User, Phone, Lock, DollarSign, Image as ImageIcon, AlertCircle } from 'lucide-react';
 
-// Axios xatolik turi uchun interfeys
 interface AxiosErrorLike {
   response?: {
     data?: {
@@ -85,7 +85,6 @@ export const ManagerFormModal: React.FC<ManagerFormModalProps> = ({
       onSuccess();
       onClose();
     } catch (err: unknown) {
-      // any o'rniga unknown va xavfsiz casting ishlatildi
       const error = err as AxiosErrorLike;
       const errMsg = error.response?.data?.message || 'Xatolik yuz berdi!';
       setError(Array.isArray(errMsg) ? errMsg[0] : errMsg);
@@ -93,62 +92,133 @@ export const ManagerFormModal: React.FC<ManagerFormModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-fadeIn">
-      <div className="bg-card border border-border w-full max-w-md rounded-2xl shadow-xl overflow-hidden space-y-4 p-6 relative">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-md p-4 animate-fade-in">
+      <div className="bg-[color-mix(in_srgb,var(--card)_75%,transparent)] backdrop-blur-2xl border border-[color-mix(in_srgb,var(--border)_40%,transparent)] w-full max-w-md rounded-3xl shadow-2xl shadow-black/50 overflow-hidden p-6 relative space-y-5">
         
-        <button onClick={onClose} className="absolute top-4 right-4 text-text-muted hover:text-text-main text-lg cursor-pointer">&times;</button>
+        {/* Yopish tugmasi */}
+        <button 
+          onClick={onClose} 
+          className="absolute top-5 right-5 text-text-muted hover:text-text-main p-1.5 hover:bg-border/20 rounded-xl transition-all cursor-pointer"
+        >
+          <X size={16} />
+        </button>
         
-        <h2 className="text-base font-black uppercase tracking-wider text-text-main">
-          {mode === 'create' ? 'Yangi menejer qo‘shish' : 'Menejer ma’lumotlarini tahrirlash'}
-        </h2>
+        {/* Sarlavha */}
+        <div className="space-y-1">
+          <h2 className="text-sm font-black uppercase tracking-widest text-text-main flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+            {mode === 'create' ? 'Yangi menejer qo‘shish' : 'Menejer ma’lumotlari'}
+          </h2>
+          <p className="text-[11px] text-text-muted font-medium">Kiber-panel tizimi uchun barcha maydonlarni to'ldiring.</p>
+        </div>
 
+        {/* Xatolik oynasi */}
         {error && (
-          <div className="p-3 rounded-xl text-xs font-semibold bg-red-500/10 text-red-500 border border-red-500/20">
-            {error}
+          <div className="p-3.5 rounded-2xl text-xs font-semibold bg-destructive/10 text-destructive border border-destructive/20 flex items-center gap-2 animate-shake">
+            <AlertCircle size={16} className="shrink-0" />
+            <span>{error}</span>
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-3">
+        {/* Forma */}
+        <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-2 gap-3">
-            <div>
-              <label className="text-[10px] font-bold text-text-muted uppercase">Ism *</label>
-              <input type="text" required value={firstName} onChange={e => setFirstName(e.target.value)} className="w-full mt-1 px-3 py-2 text-xs rounded-lg border border-border bg-background text-text-main focus:outline-none focus:border-primary"/>
+            <div className="space-y-1.5">
+              <label className="text-[10px] font-black text-text-muted uppercase tracking-wider flex items-center gap-1">
+                <User size={10} /> Ism *
+              </label>
+              <input 
+                type="text" 
+                required 
+                value={firstName} 
+                onChange={e => setFirstName(e.target.value)} 
+                className="w-full px-3 py-2.5 text-xs rounded-xl border border-[color-mix(in_srgb,var(--border)_70%,transparent)] bg-[color-mix(in_srgb,var(--background)_50%,transparent)] text-text-main focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-text-muted/40"
+                placeholder="Alisher"
+              />
             </div>
-            <div>
-              <label className="text-[10px] font-bold text-text-muted uppercase">Familiya *</label>
-              <input type="text" required value={lastName} onChange={e => setLastName(e.target.value)} className="w-full mt-1 px-3 py-2 text-xs rounded-lg border border-border bg-background text-text-main focus:outline-none focus:border-primary"/>
+            <div className="space-y-1.5">
+              <label className="text-[10px] font-black text-text-muted uppercase tracking-wider flex items-center gap-1">
+                <User size={10} /> Familiya *
+              </label>
+              <input 
+                type="text" 
+                required 
+                value={lastName} 
+                onChange={e => setLastName(e.target.value)} 
+                className="w-full px-3 py-2.5 text-xs rounded-xl border border-[color-mix(in_srgb,var(--border)_70%,transparent)] bg-[color-mix(in_srgb,var(--background)_50%,transparent)] text-text-main focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-text-muted/40"
+                placeholder="Asimov"
+              />
             </div>
           </div>
 
-          <div>
-            <label className="text-[10px] font-bold text-text-muted uppercase">Telefon raqami *</label>
-            <input type="text" required value={phone} onChange={e => setPhone(e.target.value)} className="w-full mt-1 px-3 py-2 text-xs rounded-lg border border-border bg-background text-text-main focus:outline-none focus:border-primary"/>
-          </div>
-
-          <div>
-            <label className="text-[10px] font-bold text-text-muted uppercase">
-              {mode === 'create' ? 'Tizim paroli *' : 'Yangi parol (o‘zgartirmaslik uchun bo‘sh qoldiring)'}
+          <div className="space-y-1.5">
+            <label className="text-[10px] font-black text-text-muted uppercase tracking-wider flex items-center gap-1">
+              <Phone size={10} /> Telefon raqami *
             </label>
-            <input type="password" required={mode === 'create'} value={password} onChange={e => setPassword(e.target.value)} className="w-full mt-1 px-3 py-2 text-xs rounded-lg border border-border bg-background text-text-main focus:outline-none focus:border-primary"/>
+            <input 
+              type="text" 
+              required 
+              value={phone} 
+              onChange={e => setPhone(e.target.value)} 
+              className="w-full px-3 py-2.5 text-xs rounded-xl border border-[color-mix(in_srgb,var(--border)_70%,transparent)] bg-[color-mix(in_srgb,var(--background)_50%,transparent)] text-text-main focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-text-muted/40"
+              placeholder="+998901234567"
+            />
           </div>
 
-          <div>
-            <label className="text-[10px] font-bold text-text-muted uppercase">
-              {mode === 'create' ? 'Oylik maoshi (UZS) *' : 'Oylik maoshi (o‘zgartirmaslik uchun bo‘sh qoldiring)'}
+          <div className="space-y-1.5">
+            <label className="text-[10px] font-black text-text-muted uppercase tracking-wider flex items-center gap-1">
+              <Lock size={10} /> {mode === 'create' ? 'Tizim paroli *' : 'Yangi parol'}
             </label>
-            <input type="number" required={mode === 'create'} value={monthlySalary} onChange={e => setMonthlySalary(e.target.value)} className="w-full mt-1 px-3 py-2 text-xs rounded-lg border border-border bg-background text-text-main focus:outline-none focus:border-primary"/>
+            <input 
+              type="password" 
+              required={mode === 'create'} 
+              value={password} 
+              onChange={e => setPassword(e.target.value)} 
+              className="w-full px-3 py-2.5 text-xs rounded-xl border border-[color-mix(in_srgb,var(--border)_70%,transparent)] bg-[color-mix(in_srgb,var(--background)_50%,transparent)] text-text-main focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-text-muted/40"
+              placeholder={mode === 'create' ? "••••••••" : "O'zgarishsiz qoldirish uchun bo'sh qo'ying"}
+            />
           </div>
 
-          <div>
-            <label className="text-[10px] font-bold text-text-muted uppercase">Profil rasm URL</label>
-            <input type="url" value={photoUrl} onChange={e => setPhotoUrl(e.target.value)} className="w-full mt-1 px-3 py-2 text-xs rounded-lg border border-border bg-background text-text-main focus:outline-none focus:border-primary"/>
+          <div className="space-y-1.5">
+            <label className="text-[10px] font-black text-text-muted uppercase tracking-wider flex items-center gap-1">
+              <DollarSign size={10} /> Oylik maoshi (UZS) {mode === 'create' ? '*' : ''}
+            </label>
+            <input 
+              type="number" 
+              required={mode === 'create'} 
+              value={monthlySalary} 
+              onChange={e => setMonthlySalary(e.target.value)} 
+              className="w-full px-3 py-2.5 text-xs rounded-xl border border-[color-mix(in_srgb,var(--border)_70%,transparent)] bg-[color-mix(in_srgb,var(--background)_50%,transparent)] text-text-main focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-text-muted/40"
+              placeholder={mode === 'create' ? "5000000" : "O'zgarishsiz qoldirish uchun bo'sh qo'ying"}
+            />
           </div>
 
-          <div className="flex justify-end gap-2 pt-2">
-            <button type="button" onClick={onClose} className="px-4 py-2 bg-background border border-border rounded-xl text-xs font-bold text-text-muted hover:bg-border/30 cursor-pointer">
+          <div className="space-y-1.5">
+            <label className="text-[10px] font-black text-text-muted uppercase tracking-wider flex items-center gap-1">
+              <ImageIcon size={10} /> Profil rasm URL
+            </label>
+            <input 
+              type="url" 
+              value={photoUrl} 
+              onChange={e => setPhotoUrl(e.target.value)} 
+              className="w-full px-3 py-2.5 text-xs rounded-xl border border-[color-mix(in_srgb,var(--border)_70%,transparent)] bg-[color-mix(in_srgb,var(--background)_50%,transparent)] text-text-main focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-text-muted/40"
+              placeholder="https://example.com/avatar.jpg"
+            />
+          </div>
+
+          {/* Pastki tugmalar panel */}
+          <div className="flex justify-end gap-2 pt-2 border-t border-[color-mix(in_srgb,var(--border)_30%,transparent)]">
+            <button 
+              type="button" 
+              onClick={onClose} 
+              className="px-4 py-2.5 bg-transparent border border-[color-mix(in_srgb,var(--border)_60%,transparent)] rounded-xl text-xs font-black text-text-muted hover:bg-border/20 hover:text-text-main transition-all cursor-pointer"
+            >
               Bekor qilish
             </button>
-            <button type="submit" className="px-4 py-2 bg-primary text-white rounded-xl text-xs font-bold hover:opacity-90 shadow-md cursor-pointer">
+            <button 
+              type="submit" 
+              className="px-5 py-2.5 bg-primary text-white rounded-xl text-xs font-black hover:shadow-lg hover:shadow-primary/20 hover:opacity-95 transition-all cursor-pointer uppercase tracking-wider"
+            >
               {mode === 'create' ? 'Saqlash' : 'Yangilash'}
             </button>
           </div>
