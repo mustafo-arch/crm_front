@@ -11,9 +11,10 @@ import { RoomsPage } from '../../features/rooms/pages/RoomsPage';
 import { GroupsPage } from '../../features/groups/pages/GroupPages';
 import { TeachingAssignmentsPage } from '../../features/teaching-assignment/Page/TeachAssignPage';
 import { EnrollmentsPage } from '../../features/enrollments/page/EnrollmentsPage';
-
-// 💰 Haqiqiy Moliya sahifasini import qilamiz (skrinshotdagi tuzilma bo'yicha)
 import { FinancePage } from '../../features/finance/pages/FinancePage';
+
+// 🔥 CHANDON YANGI: Davomat sahifasi komponentini import qildik
+import { AttendancePage } from '../../features/attendance/pages/AttendancePage';
 
 export const router = createBrowserRouter([
   {
@@ -56,8 +57,6 @@ export const router = createBrowserRouter([
               { path: 'rooms', element: <RoomsPage /> },
               { path: 'teaching-assignments', element: <TeachingAssignmentsPage /> },
               { path: 'enrollments', element: <EnrollmentsPage /> },
-              
-              // 💰 Vaqtinchalik div o'rniga haqiqiy sahifani ulaymiz:
               { path: 'finance', element: <FinancePage /> },
             ],
           },
@@ -65,7 +64,8 @@ export const router = createBrowserRouter([
           {
             element: <RoleGuard allowedRoles={['TEACHER']} />,
             children: [
-              { path: 'attendance', element: <div className="p-6 text-text-main">Davomat sahifasi</div> },
+              // 🔥 FIX: Eski placeholder o'rniga haqiqiy sahifa dinamik ID bilan ulandi
+              { path: 'attendance/:groupId', element: <AttendancePage /> },
             ],
           },
         ],

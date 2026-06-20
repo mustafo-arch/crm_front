@@ -1,6 +1,5 @@
-// src/components/layout/Sidebar.tsx
 import React, { useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom'; // 🔥 useNavigate qo'shildi
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   LayoutDashboard, 
@@ -17,7 +16,7 @@ import {
   FolderGit,
   ClipboardCheck,
   User,
-  LogOut // 🔥 LogOut ikonasi qo'shildi
+  LogOut 
 } from 'lucide-react';
 import { useAuthStore } from '../../store/authStore';
 
@@ -41,8 +40,8 @@ interface MenuItem {
 
 export const Sidebar = () => {
   const location = useLocation();
-  const navigate = useNavigate(); // 🔥 Yo'naltirish uchun
-  const { user, clearAuth } = useAuthStore(); // 🔥 Tizimdan chiqish logikasi olindi
+  const navigate = useNavigate();
+  const { user, clearAuth } = useAuthStore();
   const currentRole = user?.role as UserRole | undefined;
 
   const [openMenus, setOpenMenus] = useState<Record<string, boolean>>(() => {
@@ -87,8 +86,20 @@ export const Sidebar = () => {
     },
     { id: 'groups', label: 'Guruhlar', path: '/groups', icon: FolderGit, roles: ['ADMIN', 'MANAGER'] },
     { id: 'rooms', label: 'Xonalar', path: '/rooms', icon: School, roles: ['ADMIN', 'MANAGER'] },
-    { id: 'attendance', label: 'Davomat', path: '/attendance', icon: ClipboardCheck, roles: ['TEACHER'] },
-    { id: 'profile', label: 'Profil', path: '/profile', icon: User, roles: ['ADMIN', 'MANAGER', 'TEACHER'] },
+    {
+      id: 'attendance',
+      label: 'Davomat',
+      path: '/attendance/my-group', // 🔥 FIX: Static ID o'rniga maxsus kalit so'z yozdik!
+      icon: ClipboardCheck,
+      roles: ['TEACHER'],
+    },
+    { 
+      id: 'profile',
+      label: 'Profil',
+      path: '/profile',
+      icon: User,
+      roles: ['ADMIN', 'MANAGER', 'TEACHER']
+    }
   ];
 
   return (
@@ -113,12 +124,18 @@ export const Sidebar = () => {
 
             const isDropdown = !!item.children;
             const isOpen = openMenus[item.id];
-            const isActive = item.path ? location.pathname === item.path : false;
+            
+            const isActive = item.path 
+              ? item.id === 'attendance'
+                ? location.pathname.startsWith('/attendance')
+                : location.pathname === item.path 
+              : false;
 
             return (
               <div key={item.id} className="flex flex-col">
                 {isDropdown ? (
                   <button
+                    type="button"
                     onClick={() => toggleMenu(item.id)}
                     className={`group flex items-center justify-between px-3 py-2.5 rounded-xl transition-all duration-200 cursor-pointer
                       ${isOpen ? 'bg-[color-mix(in_srgb,var(--primary)_12%,transparent)] text-primary font-bold' : 'text-text-muted hover:bg-[color-mix(in_srgb,var(--background)_50%,transparent)] hover:text-text-main'}`}
@@ -174,14 +191,12 @@ export const Sidebar = () => {
         </div>
       </nav>
 
-      {/* 🔥 UNIVERSAL PROFILE CARD (ENG PASTIDA FIKSIRLANGAN) */}
+      {/* UNIVERSAL PROFILE CARD */}
       <div className="border-t border-[color-mix(in_srgb,var(--border)_30%,transparent)] p-4 flex items-center justify-between bg-[color-mix(in_srgb,var(--background)_15%,transparent)] backdrop-blur-md">
         <div className="flex items-center gap-3 min-w-0">
-          {/* Avatar */}
           <div className="w-10 h-10 rounded-xl bg-[color-mix(in_srgb,var(--primary)_15%,transparent)] border border-[color-mix(in_srgb,var(--primary)_25%,transparent)] flex items-center justify-center text-primary font-bold text-sm shrink-0 shadow-inner select-none">
             {user?.firstName ? user.firstName[0].toUpperCase() : 'U'}
           </div>
-          {/* Ism va Rol */}
           <div className="flex flex-col min-w-0">
             <span className="text-sm font-bold text-text-main leading-tight truncate">
               {user ? `${user.firstName} ${user.lastName}` : 'Foydalanuvchi'}
@@ -192,8 +207,8 @@ export const Sidebar = () => {
           </div>
         </div>
 
-        {/* Chiqish Tugmasi */}
         <button
+          type="button"
           onClick={handleLogout}
           className="flex items-center justify-center p-2.5 text-text-muted bg-red-500/60 border border-transparent rounded-xl hover:bg-red-700 hover:text-white hover:shadow-md hover:shadow-red-500/10 transition-all duration-200 cursor-pointer group shrink-0"
           title="Tizimdan chiqish"
