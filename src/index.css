@@ -55,6 +55,9 @@
   --sidebar-accent-foreground: oklch(0.52 0.21 265);
   --sidebar-border: oklch(0.935 0.012 85);
   --sidebar-ring: oklch(0.52 0.21 265 / 30%);
+
+  /* 💎 RASMDAGI LIGHT MODE SHADOW */
+  --main-shadow: inset -4px -4px 36px #c8ddff;
 }
 
 .dark {
@@ -104,6 +107,9 @@
   --sidebar-accent-foreground: oklch(0.68 0.19 265);
   --sidebar-border: oklch(0.28 0.025 255 / 40%);
   --sidebar-ring: oklch(0.68 0.19 265 / 40%);
+
+  /* 💎 DARK MODE UCHUN MOSLASHGAN SUBTIL SHADOW (Chuqurlik berish uchun) */
+  --main-shadow: inset -4px -4px 36px rgba(0, 0, 0, 0.4);
 }
 
 /* ================= TAILWIND INTEGRATSIYASI UCHUN BINDING ================= */
@@ -114,6 +120,9 @@
   --color-text-main: var(--text-main);
   --color-text-muted: var(--text-muted);
   --color-primary: var(--primary);
+  
+  /* SHADOW BINDING CHIZIQLI INTEGRATSIYASI */
+  --shadow-main-inner: var(--main-shadow);
 }
 
 @theme inline {

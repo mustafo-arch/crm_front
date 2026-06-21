@@ -6,10 +6,10 @@ import { Toaster } from '../ui/sonner';
 
 const MainLayout = () => {
   return (
-    <div className="relative flex h-screen w-screen overflow-hidden bg-background text-text-main transition-colors duration-300">
+    <div className="relative flex h-screen w-screen  overflow-hidden bg-background text-text-main transition-colors duration-300">
       
       {/* 🔥 AMBIENT GLOW EFFECTS */}
-      <div className="absolute top-[-10%] left-[-5%] w-[500px] h-[500px] bg-[color-mix(in_srgb,var(--primary)_23%,transparent)] rounded-full blur-[130px] pointer-events-none animate-pulse duration-[4000ms] z-0" />
+      {/* <div className="absolute top-[-10%] left-[-5%] w-[500px] h-[500px]  bg-[color-mix(in_srgb,var(--primary)_23%,transparent)] rounded-full blur-[130px] pointer-events-none animate-pulse duration-[4000ms] z-0" /> */}
       
       <div className="absolute bottom-[5%] right-[5%] w-[600px] h-[600px] bg-[color-mix(in_srgb,#6366f1_10%,transparent)] rounded-full blur-[150px] pointer-events-none animate-pulse duration-[6000ms] z-0" />
 
@@ -23,7 +23,7 @@ const MainLayout = () => {
         <Header />
         
         {/* ASOSIY SAHIFALAR */}
-        <main className="flex-1 p-6 overflow-y-auto custom-scrollbar">
+        <main className="flex-1 p-6 overflow-y-auto custom-scrollbar shadow-main-inner">
           <Outlet />
         </main>
         

@@ -30,7 +30,7 @@ export const Header = () => {
   });
 
   return (
-    <header className="h-20 bg-[color-mix(in_srgb,var(--card)_45%,transparent)] backdrop-blur-xl border-b border-[color-mix(in_srgb,var(--border)_40%,transparent)] px-8 flex items-center justify-between sticky top-0 z-10 transition-all duration-300">
+    <header className="h-20 bg-[color-mix(in_srgb,var(--card)_45%,transparent)] backdrop-blur-xl border-b border-[#87b5ff] px-8 flex items-center justify-between sticky top-0 z-10 transition-all duration-300">
       
       {/* CHAP TOMON: SAHIFA NOMI VA SANA */}
       <div className="flex items-center gap-5">

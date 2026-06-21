@@ -92,7 +92,7 @@ export const Sidebar = () => {
   ];
 
   return (
-    <aside className="w-72 h-screen bg-[color-mix(in_srgb,var(--card)_45%,transparent)] backdrop-blur-xl border-r border-[color-mix(in_srgb,var(--border)_40%,transparent)] flex flex-col transition-all duration-300 sticky top-0 left-0 z-20">
+    <aside className="w-72 h-screen bg-[color-mix(in_srgb,var(--card)_45%,transparent)] backdrop-blur-xl border-r border-[#87b5ff]  flex flex-col transition-all duration-300 sticky top-0 left-0 z-20">
       
       {/* BRANDING */}
       <div className="h-20 flex items-center px-6 mb-4">
