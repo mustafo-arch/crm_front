@@ -1,4 +1,4 @@
-import axios, { AxiosError, type AxiosResponse, type InternalAxiosRequestConfig } from "axios";
+
 import { useAuthStore } from "../store/authStore";
 
 interface RefreshResponse {
@@ -9,13 +9,11 @@ interface FailedQueueItem {
   resolve: (token: string | null) => void;
   reject: (error: AxiosError | Error) => void;
 }
+import axios, { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 
 export const apiClient = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000',
-  withCredentials: true, // HTTP-Only Cookielarni doimiy yuborish uchun shart!
-  headers: {
-    'Content-Type': 'application/json',
-  },
+  baseURL: 'http://localhost:3000', // '/api' ni olib tashla
+  withCredentials: true,
 });
 
 let isRefreshing = false;
